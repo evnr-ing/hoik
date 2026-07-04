@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>post test</title>
+</head>
+<body>
+<pre id="out" style="white-space:pre-wrap;font-size:13px">送信中…</pre>
+<script>
+// _redirects: /api -> .../exec 200（読みと同じ proxy）
+// text/plain で送る = CORS preflight を避ける（GASはOPTIONSを捌けない）
+const PATH = '/api';
+const BODY = { hello: 'world', n: 123, nested: { a: [1, 2, 3] } };
+(async () => {
+  const out = document.getElementById('out');
+  try {
+    const res = await fetch(PATH, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(BODY),
+    });
+    const text = await res.text();
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch (e) {}
+    out.textContent = [
+      'request: POST ' + PATH,
+      'sent body: ' + JSON.stringify(BODY),
+      'status: ' + res.status,
+      'content-type: ' + res.headers.get('content-type'),
+      'redirected: ' + res.redirected,
+      'final url: ' + res.url,
+      '',
+      '--- raw (先頭1000) ---',
+      text.slice(0, 1000),
+      '',
+      '--- JSON.parse ---',
+      parsed ? JSON.stringify(parsed, null, 2) : 'パース不可=JSONが返っていない',
+    ].join('\n');
+  } catch (e) {
+    out.textContent = 'fetch失敗: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>
