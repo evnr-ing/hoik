@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>api test</title>
+</head>
+<body>
+<pre id="out" style="white-space:pre-wrap;font-size:13px">取得中…</pre>
+<script>
+// ↓ 実在する station_key に置換（response_id 無しでも station+versions が返る想定）
+const PATH = '/api/station/ad13a9dd/family_monthly_plan';
+(async () => {
+  const out = document.getElementById('out');
+  try {
+    const res = await fetch(PATH);
+    const text = await res.text();
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch (e) {}
+    out.textContent = [
+      'status: ' + res.status,
+      'content-type: ' + res.headers.get('content-type'),
+      'redirected: ' + res.redirected,
+      'final url: ' + res.url,
+      '',
+      '--- raw (先頭1000) ---',
+      text.slice(0, 1000),
+      '',
+      '--- JSON.parse ---',
+      parsed ? JSON.stringify(parsed, null, 2) : '（パース不可＝JSONが返っていない）',
+    ].join('\n');
+  } catch (e) {
+    out.textContent = 'fetch失敗: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>
