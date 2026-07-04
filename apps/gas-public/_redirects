@@ -1,4 +1,4 @@
-/api/*      https://script.google.com/macros/s/AKfycbyTDeRXjoTRcFaMzxuAM2C5ekOFqKb1ARsJivwH56bpnP8CieuodPWAFpZ8d_EYh35azg/exec?path=:splat   200
+/api/*   https://script.google.com/macros/s/AKfycbyTDeRXjoTRcFaMzxuAM2C5ekOFqKb1ARsJivwH56bpnP8CieuodPWAFpZ8d_EYh35azg/exec?path=api/:splat   200
 /family/*   /family.html   200
 /station/*  /station.html  200
 /*          /404.html      404
