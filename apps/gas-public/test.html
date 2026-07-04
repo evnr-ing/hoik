@@ -8,7 +8,7 @@
 <body>
 <pre id="out" style="white-space:pre-wrap;font-size:13px">取得中…</pre>
 <script>
-// ↓ 実在する station_key に置換（response_id 無しでも station+versions が返る想定）
+// _redirects: /api/*  ->  .../exec?path=:splat  200
 const PATH = '/api/station/ad13a9dd/family_monthly_plan';
 (async () => {
   const out = document.getElementById('out');
@@ -18,6 +18,7 @@ const PATH = '/api/station/ad13a9dd/family_monthly_plan';
     let parsed = null;
     try { parsed = JSON.parse(text); } catch (e) {}
     out.textContent = [
+      'request: ' + PATH,
       'status: ' + res.status,
       'content-type: ' + res.headers.get('content-type'),
       'redirected: ' + res.redirected,
@@ -27,7 +28,7 @@ const PATH = '/api/station/ad13a9dd/family_monthly_plan';
       text.slice(0, 1000),
       '',
       '--- JSON.parse ---',
-      parsed ? JSON.stringify(parsed, null, 2) : '（パース不可＝JSONが返っていない）',
+      parsed ? JSON.stringify(parsed, null, 2) : 'パース不可=JSONが返っていない',
     ].join('\n');
   } catch (e) {
     out.textContent = 'fetch失敗: ' + e.message;
